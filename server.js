@@ -94,7 +94,9 @@ app.patch("/update/:id", async (req, res) => {
 
     try{
         con.query(
-            "UPDATE users SET password = ? WHERE id = ?",[newPassword, id],(err, results, fields) => {
+            "UPDATE users SET password = ? WHERE id = ?",
+            [newPassword, id],
+            (err, results, fields) => {
                 console.log("test results" ,results)
                 console.log("test err" ,err)
                 if(err){
@@ -113,11 +115,9 @@ app.patch("/update/:id", async (req, res) => {
 //Delete
 app.delete("/delete/:id", async (req, res) => {
     const id = req.params.id
-    //const id = req.params.id
-    //console.log(id)
 
     try{
-        await con.query(
+        con.query(
             "DELETE FROM users WHERE id = ?",
             [id],
             (err, results, fields) => {
@@ -138,6 +138,32 @@ app.delete("/delete/:id", async (req, res) => {
         console.log(err)
         return res.status(500).send();
     }
+
+    // app.delete("/delete", async (req, res) => {
+    //     const id = req.query.id
+    
+    //     try{
+    //         con.query(
+    //             "DELETE FROM users WHERE id = ?",
+    //             [id],
+    //             (err, results, fields) => {
+    //                 if(err){
+    //                     console.log("Error while inserting a user into the database", err)
+    //                     return res.status(400).send();
+    //                 }
+    //                 //เช็คว่ามีการลบข้อมูลจริงหรือไม่
+    //                 //กรณีที่ไม่มีข้ออมูลที่ต้องการลบ
+    //                 if(results.affectedRows === 0){
+    //                     return res.status(404).json({mesasage: "No user with that id!"})
+    //                 }
+    //                 //กรณีทำการลบสำเร็จ
+    //                 return res.status(200).json({mesasage: "User deleted successfully!"})
+    //             }
+    //         )
+    //     }catch(err){
+    //         console.log(err)
+    //         return res.status(500).send();
+    //     }
 })
 
 app.listen(3000, () => console.log('Server is running on port 3000'));
