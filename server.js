@@ -37,14 +37,12 @@ app.post("/create", async (req, res) => {
                     console.log("Error while inserting a user into the database", err)
                     return res.status(400).send();
                 }
-                else{
-                    return res.status(201).json({mesasage: "New user successfully created!"})
-                }
+                return res.status(201).json({mesasage: "New user successfully created!"})
             }
         )
     }catch(err){
         console.log(err)
-        return res.status(500),send();
+        return res.status(500).send();
     }
 })
 
@@ -58,14 +56,12 @@ app.get("/read", async (req, res) => {
                     console.log("Error while inserting a user into the database", err)
                     return res.status(400).send();
                 }
-                else{
-                    return res.status(200).json(results)
-                }
+                return res.status(200).json(results)
             }
         )
     }catch(err){
         console.log(err)
-        return res.status(500),send();
+        return res.status(500).send();
     }
 })
 
@@ -82,14 +78,12 @@ app.get("/read/single/:email", async (req, res) => {
                     console.log("Error while inserting a user into the database", err)
                     return res.status(400).send();
                 }
-                else{
-                    return res.status(200).json(results)
-                }
+                return res.status(200).json(results)
             }
         )
     }catch(err){
         console.log(err)
-        return res.status(500),send();
+        return res.status(500).send();
     }
 })
 
@@ -100,30 +94,30 @@ app.patch("/update/:id", async (req, res) => {
 
     try{
         con.query(
-            "UPDATE users SET password = ? WHERE id = ?",
-            [newPassword, id],
-            (err, results, fields) => {
+            "UPDATE users SET password = ? WHERE id = ?",[newPassword, id],(err, results, fields) => {
+                console.log("test results" ,results)
+                console.log("test err" ,err)
                 if(err){
                     console.log("Error while inserting a user into the database", err)
                     return res.status(400).send();
                 }
-                else{
-                    return res.status(200).json({mesasage: "User password updated successfully!"})
-                }
+                return res.status(200).json({mesasage: "User password updated successfully!"})
             }
         )
     }catch(err){
         console.log(err)
-        return res.status(500),send();
+        return res.status(500).send();
     }
 })
 
 //Delete
 app.delete("/delete/:id", async (req, res) => {
     const id = req.params.id
+    //const id = req.params.id
+    //console.log(id)
 
     try{
-        con.query(
+        await con.query(
             "DELETE FROM users WHERE id = ?",
             [id],
             (err, results, fields) => {
@@ -137,14 +131,12 @@ app.delete("/delete/:id", async (req, res) => {
                     return res.status(404).json({mesasage: "No user with that id!"})
                 }
                 //กรณีทำการลบสำเร็จ
-                else{
-                    return res.status(200).json({mesasage: "User deleted successfully!"})
-                }
+                return res.status(200).json({mesasage: "User deleted successfully!"})
             }
         )
     }catch(err){
         console.log(err)
-        return res.status(500),send();
+        return res.status(500).send();
     }
 })
 
